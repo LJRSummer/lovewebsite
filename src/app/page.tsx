@@ -28,7 +28,7 @@ export default function Home() {
 
   // 全局图片数组，初始为假数据，后续上传会追加
   const [images, setImages] = useState<Array<{ url: string; title: string }>>([
-    { url: "/next.svg", title: "第一次见面" },
+    { url: "/香港.jpg", title: "香港" },
     { url: "/vercel.svg", title: "第一次约会" },
     { url: "/file.svg", title: "一起看电影" },
   ]);
