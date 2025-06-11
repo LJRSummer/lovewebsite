@@ -138,9 +138,11 @@ export default function Home() {
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
             {results.map((img, idx) => (
               <div key={idx} className="rounded-xl bg-white/80 shadow p-3 flex flex-col items-center">
-                <img
+                <Image
                   src={img.url}
                   alt={img.title}
+                  width={320}
+                  height={160}
                   className="rounded-lg object-cover w-full h-40 mb-2 border border-pink-100"
                 />
                 <div className="text-pink-500 text-base font-medium text-center">{img.title}</div>
@@ -251,9 +253,11 @@ export default function Home() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                   {galleryImages.map((img, idx) => (
                     <div key={idx} className="rounded-xl bg-white/80 shadow p-3 flex flex-col items-center">
-                      <img
+                      <Image
                         src={img.url}
                         alt={img.title}
+                        width={240}
+                        height={120}
                         className="rounded-lg object-cover w-full h-32 mb-2 border border-pink-100"
                       />
                       <div className="text-pink-500 text-base font-medium text-center">{img.title}</div>
