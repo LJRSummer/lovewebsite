@@ -52,7 +52,14 @@ export default function Home() {
       }
       setResults(filtered);
       setSearching(false);
+      setKeyword(""); // 搜索后自动清空输入框
     }, 800);
+  };
+
+  // 新增：关闭搜索结果，回到初始状态
+  const handleCloseResults = () => {
+    setResults([]);
+    setError("");
   };
 
   // 上传功能（本地模拟）
@@ -153,21 +160,35 @@ export default function Home() {
           </button>
         </form>
         {/* 搜索结果展示 */}
-        {error && <div className="text-white text-center w-full drop-shadow">{error}</div>}
-        {results.length > 0 && (
-          <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
-            {results.map((img, idx) => (
-              <div key={idx} className="rounded-xl bg-black/40 shadow p-3 flex flex-col items-center border border-white/30">
-                <Image
-                  src={img.url}
-                  alt={img.title}
-                  width={320}
-                  height={160}
-                  className="rounded-lg object-cover w-full h-40 mb-2 border border-white/20"
-                />
-                <div className="text-white text-base font-medium text-center drop-shadow">{img.title}</div>
+        {(error || results.length > 0) && (
+          <div className="w-full relative">
+            {results.length > 0 && (
+              <button
+                type="button"
+                className="absolute -top-8 right-0 text-white text-2xl px-2 hover:text-neutral-300 z-10"
+                onClick={handleCloseResults}
+                aria-label="关闭搜索结果"
+              >
+                ×
+              </button>
+            )}
+            {error && <div className="text-white text-center w-full drop-shadow">{error}</div>}
+            {results.length > 0 && (
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
+                {results.map((img, idx) => (
+                  <div key={idx} className="rounded-xl bg-black/40 shadow p-3 flex flex-col items-center border border-white/30">
+                    <Image
+                      src={img.url}
+                      alt={img.title}
+                      width={320}
+                      height={160}
+                      className="rounded-lg object-cover w-full h-40 mb-2 border border-white/20"
+                    />
+                    <div className="text-white text-base font-medium text-center drop-shadow">{img.title}</div>
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
         )}
         {/* 上传图片入口 */}
