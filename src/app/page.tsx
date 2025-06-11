@@ -105,7 +105,7 @@ export default function Home() {
       className="min-h-screen flex flex-col items-center justify-center relative p-4"
       // 如需自定义背景图片，将下方 style 替换为 backgroundImage: 'url(/your-bg.jpg)'
       style={{
-        backgroundImage: 'url(/background.jpg)'
+        backgroundImage: 'url(/background.jpg)', // public 目录下的图片，路径前不要加 app
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
