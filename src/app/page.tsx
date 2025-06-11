@@ -105,8 +105,8 @@ export default function Home() {
       className="min-h-screen flex flex-col items-center justify-center relative p-4"
       // 如需自定义背景图片，将下方 style 替换为 backgroundImage: 'url(/your-bg.jpg)'
       style={{
-        background: "#fff", // 极简白色背景
-        // backgroundImage: 'url(/your-bg.jpg)', // 替换为你的黑白贴图路径
+        // 使用自定义黑白背景图片
+        backgroundImage: 'url(/Users/laurelliang/Desktop/src/src/app/background.jpg)', // 替换为你的黑白贴图路径
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
