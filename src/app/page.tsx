@@ -116,10 +116,10 @@ export default function Home() {
       </div>
       {/* 顶部标题和副标题，支持自定义文案 */}
       <header className="mb-10 text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold text-black tracking-tight mb-2 animate-fade-in">
+        <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight mb-2 animate-fade-in drop-shadow-lg">
           Hi, 王先生
         </h1>
-        <p className="text-lg sm:text-xl text-neutral-500 font-light animate-fade-in delay-200">
+        <p className="text-lg sm:text-xl text-neutral-200 font-light animate-fade-in delay-200 drop-shadow">
           明月高悬于夜空，眼下是春天
         </p>
       </header>
@@ -131,33 +131,33 @@ export default function Home() {
         >
           <input
             type="text"
-            className="flex-1 rounded-l-full px-5 py-3 border border-black focus:outline-none focus:ring-2 focus:ring-black bg-white text-lg shadow"
+            className="flex-1 rounded-l-full px-5 py-3 border border-white focus:outline-none focus:ring-2 focus:ring-white bg-black/40 text-white text-lg shadow placeholder:text-neutral-300"
             placeholder="输入关键词，寻找属于你们的回忆..."
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
           <button
             type="submit"
-            className="rounded-r-full bg-black hover:bg-neutral-800 text-white px-6 py-3 font-semibold shadow transition-colors"
+            className="rounded-r-full bg-white/20 hover:bg-white/40 text-white border border-white px-6 py-3 font-semibold shadow transition-colors backdrop-blur disabled:opacity-60"
             disabled={searching}
           >
             {searching ? "搜索中..." : "搜索"}
           </button>
         </form>
         {/* 搜索结果展示 */}
-        {error && <div className="text-black text-center w-full">{error}</div>}
+        {error && <div className="text-white text-center w-full drop-shadow">{error}</div>}
         {results.length > 0 && (
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6 mt-2">
             {results.map((img, idx) => (
-              <div key={idx} className="rounded-xl bg-white shadow p-3 flex flex-col items-center border border-neutral-200">
+              <div key={idx} className="rounded-xl bg-black/40 shadow p-3 flex flex-col items-center border border-white/30">
                 <Image
                   src={img.url}
                   alt={img.title}
                   width={320}
                   height={160}
-                  className="rounded-lg object-cover w-full h-40 mb-2 border border-neutral-200"
+                  className="rounded-lg object-cover w-full h-40 mb-2 border border-white/20"
                 />
-                <div className="text-black text-base font-medium text-center">{img.title}</div>
+                <div className="text-white text-base font-medium text-center drop-shadow">{img.title}</div>
               </div>
             ))}
           </div>
@@ -165,17 +165,17 @@ export default function Home() {
         {/* 上传图片入口 */}
         <button
           type="button"
-          className="inline-block rounded-full border-2 border-black text-black px-8 py-3 font-bold shadow-sm hover:bg-black hover:text-white transition-all text-lg animate-bounce"
+          className="inline-block rounded-full border-2 border-white text-white px-8 py-3 font-bold shadow-sm hover:bg-white/20 hover:text-black transition-all text-lg animate-bounce backdrop-blur"
           onClick={() => setShowUpload(true)}
         >
           上传秘藏
         </button>
         {/* 上传弹窗 */}
         {showUpload && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-            <div className="bg-white rounded-2xl shadow-xl p-8 w-[90vw] max-w-md flex flex-col gap-4 relative animate-fade-in">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+            <div className="bg-black/80 rounded-2xl shadow-xl p-8 w-[90vw] max-w-md flex flex-col gap-4 relative animate-fade-in border border-white/20">
               <button
-                className="absolute top-3 right-4 text-xl text-black hover:text-neutral-600"
+                className="absolute top-3 right-4 text-xl text-white hover:text-neutral-300"
                 onClick={() => {
                   setShowUpload(false);
                   setUploadError("");
@@ -187,28 +187,28 @@ export default function Home() {
               >
                 ×
               </button>
-              <h2 className="text-2xl font-bold text-black mb-2">上传图片</h2>
+              <h2 className="text-2xl font-bold text-white mb-2">上传图片</h2>
               <form onSubmit={handleUpload} className="flex flex-col gap-4">
                 <input
                   type="file"
                   accept="image/*"
-                  className="border rounded px-3 py-2"
+                  className="border border-white/30 rounded px-3 py-2 bg-black/40 text-white"
                   onChange={e => setUploadFile(e.target.files?.[0] || null)}
                   disabled={uploading}
                 />
                 <input
                   type="text"
-                  className="border rounded px-3 py-2"
+                  className="border border-white/30 rounded px-3 py-2 bg-black/40 text-white"
                   placeholder="请输入图片关键词（如：第一次约会）"
                   value={uploadKeyword}
                   onChange={e => setUploadKeyword(e.target.value)}
                   disabled={uploading}
                 />
-                {uploadError && <div className="text-black text-center">{uploadError}</div>}
-                {uploadSuccess && <div className="text-green-600 text-center">{uploadSuccess}</div>}
+                {uploadError && <div className="text-red-400 text-center">{uploadError}</div>}
+                {uploadSuccess && <div className="text-green-400 text-center">{uploadSuccess}</div>}
                 <button
                   type="submit"
-                  className="rounded-full bg-black hover:bg-neutral-800 text-white px-6 py-2 font-semibold shadow transition-colors disabled:opacity-60"
+                  className="rounded-full bg-white/20 hover:bg-white/40 text-white border border-white px-6 py-2 font-semibold shadow transition-colors disabled:opacity-60 backdrop-blur"
                   disabled={uploading}
                 >
                   {uploading ? "上传中..." : "上传"}
@@ -220,17 +220,17 @@ export default function Home() {
         {/* 图录入口 */}
         <button
           type="button"
-          className="inline-block rounded-full border-2 border-black text-black px-8 py-3 font-semibold shadow-sm hover:bg-black hover:text-white transition-all text-lg"
+          className="inline-block rounded-full border-2 border-white text-white px-8 py-3 font-semibold shadow-sm hover:bg-white/20 hover:text-black transition-all text-lg backdrop-blur"
           onClick={handleOpenGallery}
         >
           查看图录（需密码）
         </button>
         {/* 图录弹窗 */}
         {showGallery && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-            <div className="bg-white rounded-2xl shadow-xl p-8 w-[90vw] max-w-md flex flex-col gap-4 relative animate-fade-in">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+            <div className="bg-black/80 rounded-2xl shadow-xl p-8 w-[90vw] max-w-md flex flex-col gap-4 relative animate-fade-in border border-white/20">
               <button
-                className="absolute top-3 right-4 text-xl text-black hover:text-neutral-600"
+                className="absolute top-3 right-4 text-xl text-white hover:text-neutral-300"
                 onClick={() => {
                   setShowGallery(false);
                   setGalleryPassword("");
@@ -241,21 +241,21 @@ export default function Home() {
               >
                 ×
               </button>
-              <h2 className="text-2xl font-bold text-black mb-2">浪漫图录</h2>
+              <h2 className="text-2xl font-bold text-white mb-2">浪漫图录</h2>
               {galleryImages.length === 0 ? (
                 <form onSubmit={handleGallerySubmit} className="flex flex-col gap-4">
                   <input
                     type="password"
-                    className="border rounded px-3 py-2"
+                    className="border border-white/30 rounded px-3 py-2 bg-black/40 text-white"
                     placeholder="请输入访问密码"
                     value={galleryPassword}
                     onChange={e => setGalleryPassword(e.target.value)}
                     disabled={galleryLoading}
                   />
-                  {galleryError && <div className="text-black text-center">{galleryError}</div>}
+                  {galleryError && <div className="text-red-400 text-center">{galleryError}</div>}
                   <button
                     type="submit"
-                    className="rounded-full bg-black hover:bg-neutral-800 text-white px-6 py-2 font-semibold shadow transition-colors disabled:opacity-60"
+                    className="rounded-full bg-white/20 hover:bg-white/40 text-white border border-white px-6 py-2 font-semibold shadow transition-colors disabled:opacity-60 backdrop-blur"
                     disabled={galleryLoading}
                   >
                     {galleryLoading ? "验证中..." : "进入图录"}
@@ -264,15 +264,15 @@ export default function Home() {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                   {galleryImages.map((img, idx) => (
-                    <div key={idx} className="rounded-xl bg-white shadow p-3 flex flex-col items-center border border-neutral-200">
+                    <div key={idx} className="rounded-xl bg-black/40 shadow p-3 flex flex-col items-center border border-white/30">
                       <Image
                         src={img.url}
                         alt={img.title}
                         width={240}
                         height={120}
-                        className="rounded-lg object-cover w-full h-32 mb-2 border border-neutral-200"
+                        className="rounded-lg object-cover w-full h-32 mb-2 border border-white/20"
                       />
-                      <div className="text-black text-base font-medium text-center">{img.title}</div>
+                      <div className="text-white text-base font-medium text-center drop-shadow">{img.title}</div>
                     </div>
                   ))}
                 </div>
@@ -282,7 +282,7 @@ export default function Home() {
         )}
       </main>
       {/* 页脚，可自定义文案 */}
-      <footer className="mt-16 text-center text-sm text-black">
+      <footer className="mt-16 text-center text-sm text-white/80 drop-shadow">
         © {new Date().getFullYear()} Love lies beyond mountains and seas.
       </footer>
       {/* 动画样式，可根据需要调整 */}
