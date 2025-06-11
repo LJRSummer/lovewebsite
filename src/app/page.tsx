@@ -105,8 +105,7 @@ export default function Home() {
       className="min-h-screen flex flex-col items-center justify-center relative p-4"
       // 如需自定义背景图片，将下方 style 替换为 backgroundImage: 'url(/your-bg.jpg)'
       style={{
-        // 使用自定义黑白背景图片
-        backgroundImage: '/Users/laurelliang/Desktop/src/src/app/background.jpg', // 替换为你的黑白贴图路径
+        backgroundImage: 'url(/app/background.jpg)', // 正确的相对路径，适用于 Next.js 静态资源
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
