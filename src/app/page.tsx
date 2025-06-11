@@ -26,7 +26,14 @@ export default function Home() {
   const [galleryLoading, setGalleryLoading] = useState(false);
   const GALLERY_PASSWORD = "020908"; // 图录访问密码，可自定义
 
-  // 搜索功能（模拟）
+  // 全局图片数组，初始为假数据，后续上传会追加
+  const [images, setImages] = useState<Array<{ url: string; title: string }>>([
+    { url: "/next.svg", title: "第一次见面" },
+    { url: "/vercel.svg", title: "第一次约会" },
+    { url: "/file.svg", title: "一起看电影" },
+  ]);
+
+  // 搜索功能（本地模拟）
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setSearching(true);
@@ -38,16 +45,17 @@ export default function Home() {
         setSearching(false);
         return;
       }
-      // 假数据，后续可替换为真实接口
-      setResults([
-        { url: "/next.svg", title: `与“${keyword}”相关的浪漫图片1` },
-        { url: "/vercel.svg", title: `与“${keyword}”相关的浪漫图片2` },
-      ]);
+      // 搜索 images 数组，关键词模糊匹配 title
+      const filtered = images.filter(img => img.title.includes(keyword.trim()));
+      if (filtered.length === 0) {
+        setError("未找到相关图片");
+      }
+      setResults(filtered);
       setSearching(false);
-    }, 1200);
+    }, 800);
   };
 
-  // 上传功能（模拟）
+  // 上传功能（本地模拟）
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     setUploading(true);
@@ -63,12 +71,16 @@ export default function Home() {
       setUploading(false);
       return;
     }
+    // 生成本地图片 URL
+    const newUrl = URL.createObjectURL(uploadFile);
+    const newImg = { url: newUrl, title: uploadKeyword.trim() };
     setTimeout(() => {
+      setImages(prev => [...prev, newImg]);
       setUploadSuccess("上传成功！");
       setUploadFile(null);
       setUploadKeyword("");
       setUploading(false);
-    }, 1200);
+    }, 1000);
   };
 
   // 打开图录弹窗
@@ -79,7 +91,7 @@ export default function Home() {
     setGalleryImages([]);
   };
 
-  // 图录密码校验与加载（模拟）
+  // 图录密码校验与加载（本地模拟）
   const handleGallerySubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setGalleryError("");
@@ -90,14 +102,10 @@ export default function Home() {
         setGalleryLoading(false);
         return;
       }
-      // 假数据，后续可替换为真实后端数据
-      setGalleryImages([
-        { url: "/next.svg", title: "第一次见面" },
-        { url: "/vercel.svg", title: "第一次约会" },
-        { url: "/file.svg", title: "一起看电影" },
-      ]);
+      // 展示所有 images
+      setGalleryImages(images);
       setGalleryLoading(false);
-    }, 1000);
+    }, 800);
   };
 
   return (
@@ -241,7 +249,7 @@ export default function Home() {
               >
                 ×
               </button>
-              <h2 className="text-2xl font-bold text-white mb-2">浪漫图录</h2>
+              <h2 className="text-2xl font-bold text-white mb-2">碎片</h2>
               {galleryImages.length === 0 ? (
                 <form onSubmit={handleGallerySubmit} className="flex flex-col gap-4">
                   <input
