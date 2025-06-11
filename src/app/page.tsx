@@ -31,6 +31,7 @@ export default function Home() {
     { url: "/香港.jpg", title: "香港" },
     { url: "/佛山.jpg", title: "佛山" },
     { url: "/海钓.jpg", title: "海钓" },
+    { url: "/猎金游戏.jpg", title: "猎金游戏" },
   ]);
 
   // 搜索功能（本地模拟）
