@@ -15,6 +15,14 @@ export default function Home() {
   const [uploadError, setUploadError] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState("");
 
+  // 图录弹窗相关
+  const [showGallery, setShowGallery] = useState(false);
+  const [galleryPassword, setGalleryPassword] = useState("");
+  const [galleryError, setGalleryError] = useState("");
+  const [galleryImages, setGalleryImages] = useState<Array<{ url: string; title: string }>>([]);
+  const [galleryLoading, setGalleryLoading] = useState(false);
+  const GALLERY_PASSWORD = "5201314"; // 可自定义
+
   // 模拟搜索功能（后续可接后端）
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,6 +68,35 @@ export default function Home() {
       setUploadKeyword("");
       setUploading(false);
     }, 1200);
+  };
+
+  // 打开图录弹窗
+  const handleOpenGallery = () => {
+    setShowGallery(true);
+    setGalleryPassword("");
+    setGalleryError("");
+    setGalleryImages([]);
+  };
+
+  // 图录密码校验与加载
+  const handleGallerySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setGalleryError("");
+    setGalleryLoading(true);
+    setTimeout(() => {
+      if (galleryPassword !== GALLERY_PASSWORD) {
+        setGalleryError("密码错误，请重试");
+        setGalleryLoading(false);
+        return;
+      }
+      // TODO: 替换为真实后端数据
+      setGalleryImages([
+        { url: "/next.svg", title: "第一次见面" },
+        { url: "/vercel.svg", title: "第一次约会" },
+        { url: "/file.svg", title: "一起看电影" },
+      ]);
+      setGalleryLoading(false);
+    }, 1000);
   };
 
   return (
@@ -165,12 +202,66 @@ export default function Home() {
           </div>
         )}
         {/* 图录入口 */}
-        <a
-          href="#"
+        <button
+          type="button"
           className="inline-block rounded-full border-2 border-pink-300 text-pink-500 px-8 py-3 font-semibold shadow-sm hover:bg-pink-50 transition-all text-lg"
+          onClick={handleOpenGallery}
         >
           查看浪漫图录（需密码）
-        </a>
+        </button>
+        {/* 图录弹窗 */}
+        {showGallery && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+            <div className="bg-white rounded-2xl shadow-xl p-8 w-[90vw] max-w-md flex flex-col gap-4 relative animate-fade-in">
+              <button
+                className="absolute top-3 right-4 text-xl text-pink-400 hover:text-pink-600"
+                onClick={() => {
+                  setShowGallery(false);
+                  setGalleryPassword("");
+                  setGalleryError("");
+                  setGalleryImages([]);
+                }}
+                aria-label="关闭"
+              >
+                ×
+              </button>
+              <h2 className="text-2xl font-bold text-pink-500 mb-2">浪漫图录</h2>
+              {galleryImages.length === 0 ? (
+                <form onSubmit={handleGallerySubmit} className="flex flex-col gap-4">
+                  <input
+                    type="password"
+                    className="border rounded px-3 py-2"
+                    placeholder="请输入访问密码"
+                    value={galleryPassword}
+                    onChange={e => setGalleryPassword(e.target.value)}
+                    disabled={galleryLoading}
+                  />
+                  {galleryError && <div className="text-red-400 text-center">{galleryError}</div>}
+                  <button
+                    type="submit"
+                    className="rounded-full bg-pink-400 hover:bg-pink-500 text-white px-6 py-2 font-semibold shadow transition-colors disabled:opacity-60"
+                    disabled={galleryLoading}
+                  >
+                    {galleryLoading ? "验证中..." : "进入图录"}
+                  </button>
+                </form>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                  {galleryImages.map((img, idx) => (
+                    <div key={idx} className="rounded-xl bg-white/80 shadow p-3 flex flex-col items-center">
+                      <img
+                        src={img.url}
+                        alt={img.title}
+                        className="rounded-lg object-cover w-full h-32 mb-2 border border-pink-100"
+                      />
+                      <div className="text-pink-500 text-base font-medium text-center">{img.title}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </main>
       <footer className="mt-16 text-center text-sm text-purple-300">
         © {new Date().getFullYear()} Love Gallery · 为你心动的每一天
