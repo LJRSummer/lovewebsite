@@ -105,7 +105,7 @@ export default function Home() {
       className="min-h-screen flex flex-col items-center justify-center relative p-4"
       // 如需自定义背景图片，将下方 style 替换为 backgroundImage: 'url(/your-bg.jpg)'
       style={{
-        backgroundImage: 'url(/app/background.jpg)', // 正确的相对路径，适用于 Next.js 静态资源
+        backgroundImage: 'url(/background.jpg)'
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -187,7 +187,7 @@ export default function Home() {
               >
                 ×
               </button>
-              <h2 className="text-2xl font-bold text-black mb-2">上传浪漫图片</h2>
+              <h2 className="text-2xl font-bold text-black mb-2">上传图片</h2>
               <form onSubmit={handleUpload} className="flex flex-col gap-4">
                 <input
                   type="file"
@@ -223,7 +223,7 @@ export default function Home() {
           className="inline-block rounded-full border-2 border-black text-black px-8 py-3 font-semibold shadow-sm hover:bg-black hover:text-white transition-all text-lg"
           onClick={handleOpenGallery}
         >
-          查看浪漫图录（需密码）
+          查看图录（需密码）
         </button>
         {/* 图录弹窗 */}
         {showGallery && (
@@ -283,7 +283,7 @@ export default function Home() {
       </main>
       {/* 页脚，可自定义文案 */}
       <footer className="mt-16 text-center text-sm text-black">
-        © {new Date().getFullYear()} Love Gallery · 为你心动的每一天
+        © {new Date().getFullYear()} Love lies beyond mountains and seas.
       </footer>
       {/* 动画样式，可根据需要调整 */}
       <style jsx>{`
