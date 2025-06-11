@@ -112,7 +112,7 @@ export default function Home() {
     >
       {/* 顶部贴图，可自定义图片路径 */}
       <div className="mb-6 flex justify-center">
-        <Image src="/file.svg" alt="装饰贴图" width={80} height={80} className="opacity-80" />
+        <Image src="/xiangji.svg" alt="装饰贴图" width={80} height={80} className="opacity-80" />
       </div>
       {/* 顶部标题和副标题，支持自定义文案 */}
       <header className="mb-10 text-center">
