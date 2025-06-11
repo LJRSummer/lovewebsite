@@ -118,27 +118,30 @@ export default function Home() {
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center relative p-4"
-      // 如需自定义背景图片，将下方 style 替换为 backgroundImage: 'url(/your-bg.jpg)'
       style={{
-        backgroundImage: 'url(/background.jpg)', // public 目录下的图片，路径前不要加 app
+        backgroundImage: 'url(/background.jpg)',
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
+      {/* 顶部黑色渐变遮罩，提升字体可读性 */}
+      <div className="pointer-events-none select-none fixed inset-0 z-0" style={{
+        background: "linear-gradient(180deg, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.40) 60%, rgba(0,0,0,0.80) 100%)"
+      }} />
       {/* 顶部贴图，可自定义图片路径 */}
-      <div className="mb-6 flex justify-center">
+      <div className="mb-6 flex justify-center z-10">
         <Image src="/xiangji.svg" alt="装饰贴图" width={80} height={80} className="opacity-80" />
       </div>
       {/* 顶部标题和副标题，支持自定义文案 */}
-      <header className="mb-10 text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight mb-2 animate-fade-in drop-shadow-lg">
+      <header className="mb-10 text-center z-10">
+        <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight mb-2 animate-fade-in drop-shadow-2xl" style={{textShadow:'0 4px 24px #000, 0 1px 0 #222'}}>
           Hi, 王先生
         </h1>
-        <p className="text-lg sm:text-xl text-neutral-200 font-light animate-fade-in delay-200 drop-shadow">
+        <p className="text-lg sm:text-xl text-neutral-100 font-light animate-fade-in delay-200 drop-shadow-xl" style={{textShadow:'0 2px 12px #000, 0 1px 0 #222'}}>
           明月高悬于夜空，眼下是春天
         </p>
       </header>
-      <main className="w-full max-w-xl flex flex-col gap-8 items-center">
+      <main className="w-full max-w-xl flex flex-col gap-8 items-center z-10">
         {/* 搜索模块 */}
         <form
           className="w-full flex gap-2"
@@ -311,7 +314,7 @@ export default function Home() {
         )}
       </main>
       {/* 页脚，可自定义文案 */}
-      <footer className="mt-16 text-center text-sm text-white/80 drop-shadow">
+      <footer className="mt-16 text-center text-sm text-white/90 drop-shadow-xl z-10" style={{textShadow:'0 2px 8px #000'}}>
         © {new Date().getFullYear()} Love lies beyond mountains and seas.
       </footer>
       {/* 动画样式，可根据需要调整 */}
