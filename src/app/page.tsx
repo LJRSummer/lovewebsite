@@ -10,31 +10,27 @@ export default function Home() {
   const [results, setResults] = useState<Array<{ url: string; title: string }>>([]);
   const [error, setError] = useState("");
 
-  // 上传图片弹窗相关状态
-  const [showUpload, setShowUpload] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [uploadKeyword, setUploadKeyword] = useState("");
-  const [uploadFile, setUploadFile] = useState<File | null>(null);
-  const [uploadError, setUploadError] = useState("");
-  const [uploadSuccess, setUploadSuccess] = useState("");
+  // 规则介绍弹窗状态
+  const [showRules, setShowRules] = useState(false);
 
   // 图录弹窗相关状态
   const [showGallery, setShowGallery] = useState(false);
   const [galleryPassword, setGalleryPassword] = useState("");
   const [galleryError, setGalleryError] = useState("");
-  const [galleryImages, setGalleryImages] = useState<Array<{ url: string; title: string }>>([]);
   const [galleryLoading, setGalleryLoading] = useState(false);
+  const [galleryUnlocked, setGalleryUnlocked] = useState(false);
   const GALLERY_PASSWORD = "020908"; // 图录访问密码，可自定义
 
-  // 全局图片数组，初始为假数据，后续上传会追加
-  const [images, setImages] = useState<Array<{ url: string; title: string }>>([
+  // 全部图片都放 public 目录，维护在 images 里
+  const images = [
     { url: "/香港.jpg", title: "香港" },
     { url: "/佛山.jpg", title: "佛山" },
     { url: "/海钓.jpg", title: "海钓" },
     { url: "/猎金游戏.jpg", title: "猎金游戏" },
-  ]);
+    // 继续添加你的图片
+  ];
 
-  // 搜索功能（本地模拟）
+  // 搜索功能
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setSearching(true);
@@ -46,49 +42,20 @@ export default function Home() {
         setSearching(false);
         return;
       }
-      // 搜索 images 数组，关键词模糊匹配 title
       const filtered = images.filter(img => img.title.includes(keyword.trim()));
       if (filtered.length === 0) {
         setError("未找到相关图片");
       }
       setResults(filtered);
       setSearching(false);
-      setKeyword(""); // 搜索后自动清空输入框
+      setKeyword("");
     }, 800);
   };
 
-  // 新增：关闭搜索结果，回到初始状态
+  // 关闭搜索结果
   const handleCloseResults = () => {
     setResults([]);
     setError("");
-  };
-
-  // 上传功能（本地模拟）
-  const handleUpload = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setUploading(true);
-    setUploadError("");
-    setUploadSuccess("");
-    if (!uploadFile) {
-      setUploadError("请先选择图片");
-      setUploading(false);
-      return;
-    }
-    if (!uploadKeyword.trim()) {
-      setUploadError("请填写关键词");
-      setUploading(false);
-      return;
-    }
-    // 生成本地图片 URL
-    const newUrl = URL.createObjectURL(uploadFile);
-    const newImg = { url: newUrl, title: uploadKeyword.trim() };
-    setTimeout(() => {
-      setImages(prev => [...prev, newImg]);
-      setUploadSuccess("上传成功！");
-      setUploadFile(null);
-      setUploadKeyword("");
-      setUploading(false);
-    }, 1000);
   };
 
   // 打开图录弹窗
@@ -96,10 +63,10 @@ export default function Home() {
     setShowGallery(true);
     setGalleryPassword("");
     setGalleryError("");
-    setGalleryImages([]);
+    setGalleryUnlocked(false);
   };
 
-  // 图录密码校验与加载（本地模拟）
+  // 图录密码校验
   const handleGallerySubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setGalleryError("");
@@ -110,10 +77,18 @@ export default function Home() {
         setGalleryLoading(false);
         return;
       }
-      // 展示所有 images
-      setGalleryImages(images);
+      setGalleryUnlocked(true);
       setGalleryLoading(false);
     }, 800);
+  };
+
+  // 关闭图录弹窗
+  const handleCloseGallery = () => {
+    setShowGallery(false);
+    setGalleryPassword("");
+    setGalleryError("");
+    setGalleryLoading(false);
+    setGalleryUnlocked(false);
   };
 
   return (
@@ -195,58 +170,39 @@ export default function Home() {
             )}
           </div>
         )}
-        {/* 上传图片入口 */}
+        {/* 规则介绍入口 */}
         <button
           type="button"
           className="inline-block rounded-full border-2 border-white text-white px-8 py-3 font-bold shadow-sm hover:bg-white/20 hover:text-black transition-all text-lg animate-bounce backdrop-blur"
-          onClick={() => setShowUpload(true)}
+          onClick={() => setShowRules(true)}
         >
-          上传秘藏
+          规则介绍
         </button>
-        {/* 上传弹窗 */}
-        {showUpload && (
+        {/* 规则介绍弹窗 */}
+        {showRules && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-            <div className="bg-black/80 rounded-2xl shadow-xl p-8 w-[90vw] max-w-md flex flex-col gap-4 relative animate-fade-in border border-white/20">
+            <div className="bg-black/80 rounded-2xl shadow-xl p-8 w-[90vw] max-w-md flex flex-col gap-4 relative animate-fade-in border border-white/20 items-center">
               <button
                 className="absolute top-3 right-4 text-xl text-white hover:text-neutral-300"
-                onClick={() => {
-                  setShowUpload(false);
-                  setUploadError("");
-                  setUploadSuccess("");
-                  setUploadFile(null);
-                  setUploadKeyword("");
-                }}
+                onClick={() => setShowRules(false)}
                 aria-label="关闭"
               >
                 ×
               </button>
-              <h2 className="text-2xl font-bold text-white mb-2">上传图片</h2>
-              <form onSubmit={handleUpload} className="flex flex-col gap-4">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="border border-white/30 rounded px-3 py-2 bg-black/40 text-white"
-                  onChange={e => setUploadFile(e.target.files?.[0] || null)}
-                  disabled={uploading}
-                />
-                <input
-                  type="text"
-                  className="border border-white/30 rounded px-3 py-2 bg-black/40 text-white"
-                  placeholder="请输入图片关键词（如：第一次约会）"
-                  value={uploadKeyword}
-                  onChange={e => setUploadKeyword(e.target.value)}
-                  disabled={uploading}
-                />
-                {uploadError && <div className="text-red-400 text-center">{uploadError}</div>}
-                {uploadSuccess && <div className="text-green-400 text-center">{uploadSuccess}</div>}
-                <button
-                  type="submit"
-                  className="rounded-full bg-white/20 hover:bg-white/40 text-white border border-white px-6 py-2 font-semibold shadow transition-colors disabled:opacity-60 backdrop-blur"
-                  disabled={uploading}
-                >
-                  {uploading ? "上传中..." : "上传"}
-                </button>
-              </form>
+              {/* 信封样式 */}
+              <div className="w-32 h-24 bg-white rounded-t-lg relative mb-4 flex items-end justify-center shadow-lg">
+                <div className="absolute left-0 right-0 top-0 h-8 bg-neutral-200 rounded-t-lg" />
+                <div className="w-24 h-12 bg-white border border-neutral-300 rounded-b-lg z-10 flex items-center justify-center">
+                  <span className="text-black text-lg font-bold">✉️</span>
+                </div>
+              </div>
+              <div className="text-white text-center text-base leading-relaxed px-2">
+                欢迎来到回忆图录！<br />
+                1. 搜索关键词可查找属于你们的回忆图片。<br />
+                2. 图录需密码访问，密码请联系王先生获取。<br />
+                3. 本站数据仅本地保存，刷新页面会丢失上传内容。<br />
+                4. 如有建议或问题，请随时联系我。
+              </div>
             </div>
           </div>
         )}
@@ -264,18 +220,13 @@ export default function Home() {
             <div className="bg-black/80 rounded-2xl shadow-xl p-8 w-[90vw] max-w-md flex flex-col gap-4 relative animate-fade-in border border-white/20">
               <button
                 className="absolute top-3 right-4 text-xl text-white hover:text-neutral-300"
-                onClick={() => {
-                  setShowGallery(false);
-                  setGalleryPassword("");
-                  setGalleryError("");
-                  setGalleryImages([]);
-                }}
+                onClick={handleCloseGallery}
                 aria-label="关闭"
               >
                 ×
               </button>
               <h2 className="text-2xl font-bold text-white mb-2">碎片</h2>
-              {galleryImages.length === 0 ? (
+              {!galleryUnlocked ? (
                 <form onSubmit={handleGallerySubmit} className="flex flex-col gap-4">
                   <input
                     type="password"
@@ -295,8 +246,8 @@ export default function Home() {
                   </button>
                 </form>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-                  {galleryImages.map((img, idx) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2 max-h-80 overflow-y-auto">
+                  {images.map((img, idx) => (
                     <div key={idx} className="rounded-xl bg-black/40 shadow p-3 flex flex-col items-center border border-white/30">
                       <Image
                         src={img.url}
