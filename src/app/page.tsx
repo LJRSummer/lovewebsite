@@ -195,7 +195,6 @@ export default function Home() {
                 <div className="w-24 h-12 bg-white border border-neutral-300 rounded-b-lg z-10 flex items-center justify-center">
                   <Image src="/envelope.png" alt="信封" width={48} height={32} />
                 </div>
-                </div>
               </div>
               <div className="text-white text-center text-base leading-relaxed px-2">
                 北冰洋与尼罗河会在湿云中交融<br />
