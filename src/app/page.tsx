@@ -1,6 +1,6 @@
 "use client";
 // 首页：黑白极简高级风，支持自定义贴图和文案
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Home() {
@@ -21,14 +21,14 @@ export default function Home() {
   const [galleryUnlocked, setGalleryUnlocked] = useState(false);
   const GALLERY_PASSWORD = "020908"; // 图录访问密码，可自定义
 
-  // 全部图片都放 public 目录，维护在 images 里
-  const images = [
-    { url: "/香港.jpg", title: "香港" },
-    { url: "/佛山.jpg", title: "佛山" },
-    { url: "/海钓.jpg", title: "海钓" },
-    { url: "/猎金游戏.jpg", title: "猎金游戏" },
-    // 继续添加你的图片
-  ];
+  // 自动获取 public/albums 下所有图片
+  const [images, setImages] = useState<Array<{ url: string; title: string }>>([]);
+
+  useEffect(() => {
+    fetch("/api/images")
+      .then((res) => res.json())
+      .then((data) => setImages(data));
+  }, []);
 
   // 搜索功能
   const handleSearch = async (e: React.FormEvent) => {
