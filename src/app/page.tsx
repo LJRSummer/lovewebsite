@@ -193,15 +193,16 @@ export default function Home() {
               <div className="w-32 h-24 bg-white rounded-t-lg relative mb-4 flex items-end justify-center shadow-lg">
                 <div className="absolute left-0 right-0 top-0 h-8 bg-neutral-200 rounded-t-lg" />
                 <div className="w-24 h-12 bg-white border border-neutral-300 rounded-b-lg z-10 flex items-center justify-center">
-                  <span className="text-black text-lg font-bold">✉️</span>
+                  <Image src="/envelope.png" alt="信封" width={48} height={32} />
+                </div>
                 </div>
               </div>
               <div className="text-white text-center text-base leading-relaxed px-2">
-                欢迎来到回忆图录！<br />
-                1. 搜索关键词可查找属于你们的回忆图片。<br />
-                2. 图录需密码访问，密码请联系王先生获取。<br />
-                3. 本站数据仅本地保存，刷新页面会丢失上传内容。<br />
-                4. 如有建议或问题，请随时联系我。
+                北冰洋与尼罗河会在湿云中交融<br />
+                1. 输入关键词，可能是地点/人物/事件。<br />
+                2. 图录的密码，最简单不过了。<br />
+                3. 你知道的吧。<br />
+                4. 有问题请联系梁小姐。
               </div>
             </div>
           </div>
