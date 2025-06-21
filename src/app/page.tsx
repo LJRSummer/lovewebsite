@@ -192,13 +192,12 @@ export default function Home() {
               {/* 信封样式 */}
               <div className="w-32 h-24 bg-white rounded-t-lg relative mb-4 flex items-end justify-center shadow-lg">
                 <div className="absolute left-0 right-0 top-0 h-8 bg-neutral-200 rounded-t-lg" />
-                <div className="w-24 h-12 bg-white border border-neutral-300 rounded-b-lg z-10 flex items-center justify-center overflow-hidden">
+                <div className="w-24 h-12 bg-white border border-neutral-300 rounded-b-lg z-10 relative overflow-hidden">
                   <Image
                     src="/envelope.png"
                     alt="信封"
-                    width={96}
-                    height={48}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    fill
+                    style={{ objectFit: "cover" }}
                   />
                 </div>
               </div>
