@@ -152,13 +152,6 @@ export default function Home() {
                   }}
                 />
               ))}
-              <style jsx>{`
-                @keyframes starfall {
-                  0% { transform: translateY(-40px) scale(1); opacity: 1; }
-                  80% { opacity: 1; }
-                  100% { transform: translateY(80px) scale(0.7); opacity: 0; }
-                }
-              `}</style>
             </div>
             {/* 居中放大图片弹窗 */}
             <div className="fixed inset-0 z-[101] flex items-center justify-center bg-black/60">
@@ -181,16 +174,6 @@ export default function Home() {
                 />
                 <div className="text-white text-2xl font-bold mt-6 drop-shadow-xl">{easterEggImage?.title}</div>
               </div>
-              <style jsx>{`
-                .animate-easter-pop {
-                  animation: easterPop 0.8s cubic-bezier(.68,-0.55,.27,1.55);
-                }
-                @keyframes easterPop {
-                  0% { transform: scale(0.5); opacity: 0; }
-                  80% { transform: scale(1.05); opacity: 1; }
-                  100% { transform: scale(1); opacity: 1; }
-                }
-              `}</style>
             </div>
           </>
         )}
@@ -366,37 +349,37 @@ export default function Home() {
         <footer className="mt-16 text-center text-sm text-white/90 drop-shadow-xl z-10" style={{textShadow:'0 2px 8px #000'}}>
           © {new Date().getFullYear()} Love lies beyond mountains and seas.
         </footer>
-        {/* 动画样式，可根据需要调整 */}
-        <style jsx>{`
-          .animate-fade-in {
-            animation: fadeIn 1.2s ease;
-          }
-          .animate-bounce {
-            animation: bounce 2s infinite;
-          }
-          .animate-easter-pop {
-            animation: easterPop 0.8s cubic-bezier(.68,-0.55,.27,1.55);
-          }
-          @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px);}
-            to { opacity: 1; transform: translateY(0);}
-          }
-          @keyframes bounce {
-            0%, 100% { transform: translateY(0);}
-            50% { transform: translateY(-10px);}
-          }
-          @keyframes easterPop {
-            0% { transform: scale(0.5); opacity: 0;}
-            80% { transform: scale(1.05); opacity: 1;}
-            100% { transform: scale(1); opacity: 1;}
-          }
-          @keyframes starfall {
-            0% { transform: translateY(-40px) scale(1); opacity: 1;}
-            80% { opacity: 1;}
-            100% { transform: translateY(80px) scale(0.7); opacity: 0;}
-          }
-        `}</style>
       </div>
+      {/* 动画样式，必须放在 Fragment 外层，不能嵌套在 div 内部 */}
+      <style jsx>{`
+        .animate-fade-in {
+          animation: fadeIn 1.2s ease;
+        }
+        .animate-bounce {
+          animation: bounce 2s infinite;
+        }
+        .animate-easter-pop {
+          animation: easterPop 0.8s cubic-bezier(.68,-0.55,.27,1.55);
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px);}
+          to { opacity: 1; transform: translateY(0);}
+        }
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0);}
+          50% { transform: translateY(-10px);}
+        }
+        @keyframes easterPop {
+          0% { transform: scale(0.5); opacity: 0;}
+          80% { transform: scale(1.05); opacity: 1;}
+          100% { transform: scale(1); opacity: 1;}
+        }
+        @keyframes starfall {
+          0% { transform: translateY(-40px) scale(1); opacity: 1;}
+          80% { opacity: 1;}
+          100% { transform: translateY(80px) scale(0.7); opacity: 0;}
+        }
+      `}</style>
     </>
   );
 }
