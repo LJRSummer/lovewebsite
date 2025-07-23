@@ -373,23 +373,26 @@ export default function Home() {
         .animate-bounce {
           animation: bounce 2s infinite;
         }
+        .animate-easter-pop {
+          animation: easterPop 0.8s cubic-bezier(.68,-0.55,.27,1.55);
+        }
         @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(20px);}
+          to { opacity: 1; transform: translateY(0);}
         }
         @keyframes bounce {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
+          0%, 100% { transform: translateY(0);}
+          50% { transform: translateY(-10px);}
+        }
+        @keyframes easterPop {
+          0% { transform: scale(0.5); opacity: 0;}
+          80% { transform: scale(1.05); opacity: 1;}
+          100% { transform: scale(1); opacity: 1;}
+        }
+        @keyframes starfall {
+          0% { transform: translateY(-40px) scale(1); opacity: 1;}
+          80% { opacity: 1;}
+          100% { transform: translateY(80px) scale(0.7); opacity: 0;}
         }
       `}</style>
     </div>
