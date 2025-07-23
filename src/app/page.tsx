@@ -155,18 +155,20 @@ export default function Home() {
             </div>
             {/* 居中放大图片弹窗 */}
             <div className="fixed inset-0 z-[101] flex items-center justify-center bg-black/60">
+              {/* 关闭键放在弹窗右上角，脱离图片区域 */}
+              <button
+                className="absolute top-8 right-8 text-4xl text-black bg-white/80 rounded-full px-4 py-2 shadow-lg hover:bg-black hover:text-white transition z-20"
+                onClick={handleCloseEasterEgg}
+                aria-label="关闭"
+                style={{border: "2px solid #333"}}
+              >
+                ×
+              </button>
               <div className="relative flex flex-col items-center">
-                <button
-                  className="absolute top-4 right-4 text-4xl text-white hover:text-neutral-300 z-10"
-                  onClick={handleCloseEasterEgg}
-                  aria-label="关闭"
-                >
-                  ×
-                </button>
                 <Image
                   src={easterEggImage?.url || ""}
                   alt={easterEggImage?.title || ""}
-                  width={0} // 设为0，表示不限制宽度
+                  width={0}
                   height={0}
                   sizes="100vw"
                   style={{
