@@ -1,5 +1,4 @@
 "use client";
-// 首页：黑白极简高级风，支持自定义贴图和文案
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
@@ -24,6 +23,10 @@ export default function Home() {
   // 自动获取 public/albums 下所有图片
   const [images, setImages] = useState<Array<{ url: string; title: string }>>([]);
 
+  // 彩蛋相关状态
+  const [easterEggActive, setEasterEggActive] = useState(false);
+  const [easterEggImage, setEasterEggImage] = useState<{ url: string; title: string } | null>(null);
+
   useEffect(() => {
     fetch("/api/images")
       .then((res) => res.json())
@@ -40,6 +43,19 @@ export default function Home() {
       if (!keyword.trim()) {
         setError("请输入关键词");
         setSearching(false);
+        return;
+      }
+      // 彩蛋判断
+      if (keyword.trim() === "梁靖然") {
+        const img = images.find(img => img.title === "梁靖然");
+        if (img) {
+          setEasterEggImage(img);
+          setEasterEggActive(true);
+        } else {
+          setError("未找到相关图片");
+        }
+        setSearching(false);
+        setKeyword("");
         return;
       }
       const filtered = images.filter(img => img.title.includes(keyword.trim()));
@@ -91,19 +107,92 @@ export default function Home() {
     setGalleryUnlocked(false);
   };
 
+  // 关闭彩蛋
+  const handleCloseEasterEgg = () => {
+    setEasterEggActive(false);
+    setEasterEggImage(null);
+  };
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center relative p-4"
       style={{
-        backgroundImage: 'url(/background.jpg)',
+        backgroundImage: easterEggActive
+          ? 'url(/easter-bg.jpg)' // 彩蛋背景图，放在 public 目录
+          : 'url(/background.jpg)',
         backgroundSize: "cover",
         backgroundPosition: "center",
+        transition: "background-image 0.5s"
       }}
     >
       {/* 顶部黑色渐变遮罩，提升字体可读性 */}
       <div className="pointer-events-none select-none fixed inset-0 z-0" style={{
         background: "linear-gradient(180deg, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.40) 60%, rgba(0,0,0,0.80) 100%)"
       }} />
+      {/* 彩蛋特效层 */}
+      {easterEggActive && (
+        <>
+          {/* 星星特效 */}
+          <div className="fixed inset-0 pointer-events-none z-[100]">
+            {[...Array(60)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  width: `${8 + Math.random() * 8}px`,
+                  height: `${8 + Math.random() * 8}px`,
+                  background: "white",
+                  borderRadius: "50%",
+                  boxShadow: "0 0 12px 4px #fff",
+                  opacity: 0.7 + Math.random() * 0.3,
+                  animation: `starfall 2.5s linear ${Math.random() * 2}s infinite`
+                }}
+              />
+            ))}
+            <style jsx>{`
+              @keyframes starfall {
+                0% { transform: translateY(-40px) scale(1); opacity: 1; }
+                80% { opacity: 1; }
+                100% { transform: translateY(80px) scale(0.7); opacity: 0; }
+              }
+            `}</style>
+          </div>
+          {/* 居中放大图片弹窗 */}
+          <div className="fixed inset-0 z-[101] flex items-center justify-center bg-black/60">
+            <div className="relative flex flex-col items-center">
+              <button
+                className="absolute -top-10 right-0 text-4xl text-white hover:text-neutral-300"
+                onClick={handleCloseEasterEgg}
+                aria-label="关闭"
+                style={{top:0, right:0}}
+              >
+                ×
+              </button>
+              <Image
+                src={easterEggImage?.url || ""}
+                alt={easterEggImage?.title || ""}
+                width={480}
+                height={320}
+                className="rounded-2xl shadow-2xl border-4 border-white animate-easter-pop"
+                style={{maxWidth:"80vw", maxHeight:"60vh"}}
+              />
+              <div className="text-white text-2xl font-bold mt-6 drop-shadow-xl">{easterEggImage?.title}</div>
+            </div>
+            <style jsx>{`
+              .animate-easter-pop {
+                animation: easterPop 0.8s cubic-bezier(.68,-0.55,.27,1.55);
+              }
+              @keyframes easterPop {
+                0% { transform: scale(0.5); opacity: 0; }
+                80% { transform: scale(1.05); opacity: 1; }
+                100% { transform: scale(1); opacity: 1; }
+              }
+            `}</style>
+          </div>
+        </>
+      )}
       {/* 顶部贴图，可自定义图片路径 */}
       <div className="mb-6 flex justify-center z-10">
         <Image src="/xiangji.svg" alt="装饰贴图" width={80} height={80} className="opacity-80" />
@@ -129,17 +218,18 @@ export default function Home() {
             placeholder="输入关键词，寻找属于你们的回忆..."
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
+            disabled={easterEggActive}
           />
           <button
             type="submit"
             className="rounded-r-full bg-white/20 hover:bg-white/40 text-white border border-white px-6 py-3 font-semibold shadow transition-colors backdrop-blur disabled:opacity-60"
-            disabled={searching}
+            disabled={searching || easterEggActive}
           >
             {searching ? "搜索中..." : "搜索"}
           </button>
         </form>
         {/* 搜索结果展示 */}
-        {(error || results.length > 0) && (
+        {(error || results.length > 0) && !easterEggActive && (
           <div className="w-full relative">
             {results.length > 0 && (
               <button
@@ -175,11 +265,12 @@ export default function Home() {
           type="button"
           className="inline-block rounded-full border-2 border-white text-white px-8 py-3 font-bold shadow-sm hover:bg-white/20 hover:text-black transition-all text-lg animate-bounce backdrop-blur"
           onClick={() => setShowRules(true)}
+          disabled={easterEggActive}
         >
           规则介绍
         </button>
         {/* 规则介绍弹窗 */}
-        {showRules && (
+        {showRules && !easterEggActive && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
             <div className="bg-black/80 rounded-2xl shadow-xl p-8 w-[90vw] max-w-md flex flex-col gap-4 relative animate-fade-in border border-white/20 items-center">
               <button
@@ -215,11 +306,12 @@ export default function Home() {
           type="button"
           className="inline-block rounded-full border-2 border-white text-white px-8 py-3 font-semibold shadow-sm hover:bg-white/20 hover:text-black transition-all text-lg backdrop-blur"
           onClick={handleOpenGallery}
+          disabled={easterEggActive}
         >
           查看图录（需密码）
         </button>
         {/* 图录弹窗 */}
-        {showGallery && (
+        {showGallery && !easterEggActive && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
             <div className="bg-black/80 rounded-2xl shadow-xl p-8 w-[90vw] max-w-md flex flex-col gap-4 relative animate-fade-in border border-white/20">
               <button
