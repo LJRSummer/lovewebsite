@@ -157,20 +157,27 @@ export default function Home() {
             <div className="fixed inset-0 z-[101] flex items-center justify-center bg-black/60">
               <div className="relative flex flex-col items-center">
                 <button
-                  className="absolute -top-10 right-0 text-4xl text-white hover:text-neutral-300"
+                  className="absolute top-4 right-4 text-4xl text-white hover:text-neutral-300 z-10"
                   onClick={handleCloseEasterEgg}
                   aria-label="关闭"
-                  style={{top:0, right:0}}
                 >
                   ×
                 </button>
                 <Image
                   src={easterEggImage?.url || ""}
                   alt={easterEggImage?.title || ""}
-                  width={480}
-                  height={320}
-                  className="rounded-2xl shadow-2xl border-4 border-white animate-easter-pop"
-                  style={{maxWidth:"80vw", maxHeight:"60vh"}}
+                  width={0} // 设为0，表示不限制宽度
+                  height={0}
+                  sizes="100vw"
+                  style={{
+                    width: "auto",
+                    height: "auto",
+                    maxWidth: "90vw",
+                    maxHeight: "80vh",
+                    borderRadius: "1rem",
+                    boxShadow: "0 8px 32px #0008"
+                  }}
+                  className="shadow-2xl border-4 border-white animate-easter-pop"
                 />
                 <div className="text-white text-2xl font-bold mt-6 drop-shadow-xl">{easterEggImage?.title}</div>
               </div>
